@@ -40,37 +40,42 @@
 } */
 
 class Product{
-    constructor(name, description, price, category, image, likes){
+    constructor(name, description, price, category, image, likes, id){
         this.name = name
         this.description = description
         this.price = price
         this.category = category
         this.image = image
         this.likes = likes
+        this.id = id
     }
 
     increaseLikes (){
         return this.likes += 1
+    }
+
+    decreaseLikes(){
+        return this.likes -= 1
     }
 }
 
 const mouse = new Product('Anker Vertical Mouse', 'compy vertical mouse', 40.99, '', 'black', 'pc accessories', 0)
 
 const products = [
-    new Product('SSD 1TB Crucial Disk', 'Super fast SSD drive', 49.99, 'PC Hardware', './assets/img/ssd.jpg', 25),
-    new Product('Aoc 24inc Monitor', 'ultra thin monitor', 149.99, 'PC Monitors', './assets/img/monitor.jpg', 2),
-    new Product('Corsair ATX Case', 'Small form factor atx desktop pc case', 99.99, 'PC Accessories', './assets/img/case.jpg', 14),
-    new Product('Anker Vertical mouse', 'Comfy vertical mouse', 29.99, 'PC accessories', './assets/img/mouse.jpg', 1),
-    new Product('Lenovo Idea pad', 'Modern 8gb ram ultra thin laptop', 549.99, 'Laptops', './assets/img/laptop.webp', 0),
-    new Product('Walking desk', 'Get fit with the best walking desk', 649.99, 'Office equipment', './assets/img/desk.webp', 78),
+    new Product('SSD 1TB Crucial Disk', 'Super fast SSD drive', 49.99, 'PC Hardware', './assets/img/ssd.jpg', 25, 1),
+    new Product('Aoc 24inc Monitor', 'ultra thin monitor', 149.99, 'PC Monitors', './assets/img/monitor.jpg', 2, 2),
+    new Product('Corsair ATX Case', 'Small form factor atx desktop pc case', 99.99, 'PC Accessories', './assets/img/case.jpg', 14, 3),
+    new Product('Anker Vertical mouse', 'Comfy vertical mouse', 29.99, 'PC accessories', './assets/img/mouse.jpg', 1, 4),
+    new Product('Lenovo Idea pad', 'Modern 8gb ram ultra thin laptop', 549.99, 'Laptops', './assets/img/laptop.webp', 0, 5),
+    new Product('Walking desk', 'Get fit with the best walking desk', 649.99, 'Office equipment', './assets/img/desk.webp', 78, 6),
 ]
 
 console.log(products);
 
 
 function generateProduct(product) {
-    /* product.increaseLikes()
-    console.log(product); */
+     /* product.increaseLikes()
+    console.log(product); */ 
     return `
     <div class="product">
                 <img src="${product.image}" alt="${product.name}">
@@ -84,7 +89,7 @@ function generateProduct(product) {
                 </div>
                 <div class="like" data-product-likes="${product.likes}">
                     <i class="fa-solid fa-heart"></i>
-                    <span class="like-counter d_none">${product.likes +1}</span>
+                    <span class="like-counter d_none" data-product-id="${product.id}"></span>
                 </div>
                 <button class="btn btn-primary buy-now" data-product-name="${product.name}" data-product-price="${product.price}">Buy Now </button>
             </div>`
@@ -132,7 +137,7 @@ document.querySelectorAll('.buy-now').forEach(element => {
 })
 
 
-document.querySelectorAll('.like').forEach(element =>{
+/* document.querySelectorAll('.like').forEach(element =>{
     element.addEventListener('click', function(){
         console.log(this)
         const likeElement = element.querySelector('.like-counter')
@@ -144,3 +149,33 @@ document.querySelectorAll('.like').forEach(element =>{
 
 
 })
+ */
+
+document.querySelectorAll('.like').forEach(element =>{
+        element.addEventListener('click', function(){
+
+            console.log(this)
+            const likeElement = element.querySelector('.like-counter')
+            console.log(likeElement);
+            const productId = likeElement.getAttribute('data-product-id')
+            console.log(productId);
+            const likedProduct = products.find(p => p.id == productId);
+
+            if (this.className.includes('liked')){
+                this.classList.remove('liked')
+                likedProduct.decreaseLikes()
+            } else {
+                likedProduct.increaseLikes()
+                console.log(likedProduct);
+                this.classList.add('liked')  
+            }
+
+            likeElement.innerHTML = Number(likedProduct.likes)
+            likeElement.classList.remove('d_none')
+            
+
+            
+        })
+    
+    
+    })

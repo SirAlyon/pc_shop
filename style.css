@@ -78,13 +78,12 @@ header>h1{
     list-style: none;
 }
 
-.like:hover{
+/* .like:hover{
     color: red;
-}
+} */
 
-.color_red{
+.liked{
     color:red;
-    transition: linear 1s;
 }
 
 .d_none{
